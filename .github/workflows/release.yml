@@ -30,6 +30,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Build failed' }
       - name: Native unit tests
         run: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/test-unit.ps1
+      - name: Desktop state regression tests
+        run: node --test tests/*.test.js
       - name: Rust checks
         working-directory: src-tauri
         run: cargo test --locked

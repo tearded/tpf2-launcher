@@ -8,6 +8,7 @@ const channels = { official: { name: 'Original', author: 'silver2127', descripti
 let selected = 'official', installed = null, offer = null, status = null, busy = false, pendingUpdate = null, updateChecking = false, launcherVersion = '';
 const radios = [...document.querySelectorAll('[data-channel]')];
 let toastTimer;
+let statusRefresh = null;
 function toast(message) { clearTimeout(toastTimer); $('toast').textContent = String(message); $('toast').hidden = false; toastTimer = setTimeout(() => $('toast').hidden = true, 6500); }
 function message(text) { document.querySelector('.connection-status').textContent = String(text); }
 function setMainLabel(text) { $('main-action').querySelector('span').textContent = text; }
@@ -19,7 +20,7 @@ function render() {
   $('offered-version').textContent = offer?.version || '—';
   const same = installed?.channel === selected && installed?.version === offer?.version;
   $('release-status').textContent = same ? 'Aktuell' : installed?.channel === selected ? 'Update verfügbar' : 'Kanal wählen';
-  setMainLabel(status?.recovery ? 'Gesicherten Stand wiederherstellen' : !status?.gameFolder ? 'Spielordner auswählen' : !status?.initialized ? selected === 'official' ? 'Multiplayer installieren' : 'Zuerst Original installieren' : same ? 'Spielen' : installed?.channel === selected ? 'Aktualisieren & spielen' : `Zu ${channel.name} wechseln`);
+  setMainLabel(status?.running ? 'Spiel läuft · bitte zuerst schließen' : status?.recovery ? 'Gesicherten Stand wiederherstellen' : !status?.gameFolder ? 'Spielordner auswählen' : !status?.initialized ? selected === 'official' ? 'Multiplayer installieren' : 'Zuerst Original installieren' : same ? 'Spielen' : installed?.channel === selected ? 'Aktualisieren & spielen' : `Zu ${channel.name} wechseln`);
   $('main-action').disabled = busy || Boolean(status?.running) || (!status?.recovery && Boolean(status?.gameFolder) && (!offer || (!status?.initialized && selected !== 'official')));
   $('play-current').disabled = busy || !status?.gameFolder || !status?.initialized || status?.running || status?.recovery;
   ['check-game', 'open-folder', 'open-backups', 'choose-folder'].forEach(id => { if ($(id)) $(id).disabled = busy; });
@@ -30,7 +31,19 @@ function render() {
 }
 async function native(action, options = {}) { return invoke('native_action', { action, channel: selected, ...options }); }
 function acceptStatus(value) { status = value; installed = value.installed; render(); }
-async function refreshStatus() { acceptStatus(await native('status')); }
+function refreshStatus() {
+  // Coalesce focus/timer checks and let user actions wait for the native helper.
+  if (!statusRefresh) statusRefresh = native('status').then(acceptStatus).finally(() => { statusRefresh = null; });
+  return statusRefresh;
+}
+async function refreshGameStatus() {
+  if (busy || document.hidden) return;
+  const wasRunning = status?.running;
+  try {
+    await refreshStatus();
+    if (status.running !== wasRunning) message(status.running ? 'Spiel läuft · Änderungen erst nach dem Schließen' : 'Spiel beendet · Updates und Kanalwechsel sind wieder möglich.');
+  } catch { message('Spielstatus konnte nicht geprüft werden. Bitte erneut prüfen.'); }
+}
 async function fetchOffer() {
   offer = await native('fetch');
   $('news-channel').textContent = channels[selected].name.toUpperCase();
@@ -45,14 +58,14 @@ async function fetchOffer() {
 async function task(work) {
   if (busy) return;
   busy = true; render();
-  try { await work(); }
+  try { if (statusRefresh) await statusRefresh; await work(); }
   catch (error) { message(String(error)); toast(error); }
   finally { busy = false; render(); }
 }
 async function selectChannel(key) {
   if (busy || !channels[key]) return;
   selected = key; offer = null; render();
-  await task(async () => { message('Release wird geprüft …'); await fetchOffer(); message(status?.running ? 'Spiel läuft · Änderungen erst nach dem Schließen' : 'Release geprüft · Download mit SHA-256-Prüfung'); });
+  await task(async () => { message('Release wird geprüft …'); await refreshStatus(); await fetchOffer(); message(status?.running ? 'Spiel läuft · Änderungen erst nach dem Schließen' : 'Release geprüft · Download mit SHA-256-Prüfung'); });
 }
 async function performInstall() {
   $('preview-dialog').close();
@@ -97,6 +110,7 @@ async function installLauncherUpdate() {
   busy = true;render();
   let downloaded = 0, total = 0;
   try {
+    if (statusRefresh) await statusRefresh;
     await pendingUpdate.downloadAndInstall(event => {
       if (event.event === 'Started') total = event.data.contentLength || 0;
       if (event.event === 'Progress') downloaded += event.data.chunkLength;
@@ -145,5 +159,8 @@ export async function initializeDesktop() {
     if(installed?.channel==='community')selected='community';
     await fetchOffer();message(status?.running?'Spiel läuft · Änderungen erst nach dem Schließen':status?.gameFolder?'Bereit · Download mit SHA-256-Prüfung':'Bitte den Transport-Fever-2-Spielordner auswählen.');
   });
+  window.addEventListener('focus', refreshGameStatus);
+  document.addEventListener('visibilitychange', refreshGameStatus);
+  window.setInterval(refreshGameStatus, 2500);
   await checkLauncherUpdate();
 }

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>TPF2 Multiplayer Launcher</title>
+  <script src="/theme.js"></script>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+<svg class="symbols" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
+  <symbol id="train" viewBox="0 0 24 24"><path d="M6 16V6a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3Z M6 10h12 M9 19l-2 3m8-3 2 3M9 15h.01M15 15h.01"/></symbol>
+  <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+  <symbol id="download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M5 16v4h14v-4"/></symbol>
+  <symbol id="play" viewBox="0 0 24 24"><path d="m9 5 11 7-11 7Z"/></symbol>
+  <symbol id="check" viewBox="0 0 24 24"><path d="m5 12 4 4 10-10"/></symbol>
+  <symbol id="settings" viewBox="0 0 24 24"><path d="M4 7h16M4 17h16"/><rect x="7" y="4" width="4" height="6" rx="1"/><rect x="14" y="14" width="4" height="6" rx="1"/></symbol>
+  <symbol id="moon" viewBox="0 0 24 24"><path d="M20 14A8.5 8.5 0 0 1 10 4 8.5 8.5 0 1 0 20 14Z"/></symbol>
+  <symbol id="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+  <symbol id="refresh" viewBox="0 0 24 24"><path d="M20 10a8 8 0 0 0-14-5L3 8m0-5v5h5M4 14a8 8 0 0 0 14 5l3-3m0 5v-5h-5"/></symbol>
+  <symbol id="folder" viewBox="0 0 24 24"><path d="M3 7V5h7l2 3h9v11H3Z"/></symbol>
+  <symbol id="shield" viewBox="0 0 24 24"><path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6Z m-4 9 3 3 5-5"/></symbol>
+  <symbol id="close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+  <symbol id="external" viewBox="0 0 24 24"><path d="M14 4h6v6m0-6L10 14m-1-9H4v15h15v-5"/></symbol>
+</defs></svg>
+<div class="app">
+  <header class="app-header">
+    <a class="brand" href="#" aria-label="TPF2 Multiplayer Startseite"><span class="brand-mark"><svg><use href="#train"/></svg></span><span><strong>TPF2<span class="brand-word"> Multiplayer</span></strong><small>Gemeinsam auf der gleichen Strecke.</small></span></a>
+    <div class="header-actions"><span class="preview-label">DESIGNVORSCHAU</span><button class="icon-button" id="theme-toggle" aria-label="Darkmode" aria-pressed="false" title="Dunkle Darstellung aktivieren"><svg aria-hidden="true"><use href="#moon"/></svg></button><button class="icon-button" id="open-settings" aria-label="Einstellungen öffnen"><svg><use href="#settings"/></svg></button></div>
+  </header>
+  <main>
+    <section class="welcome" aria-labelledby="welcome-title">
+      <div class="welcome-copy"><p class="eyebrow"><span class="tiny-line"></span> DEINE NÄCHSTE GEMEINSAME RUNDE</p><h1 id="welcome-title">Zusammen<br>weiterbauen<span>.</span></h1><p>Ein Launcher. Euer Multiplayer.<br>Version wählen, aktualisieren und losfahren.</p></div>
+      <div class="route-art" aria-hidden="true">
+        <svg viewBox="0 0 430 260" fill="none"><defs><pattern id="dots" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#ced8d2"/></pattern></defs><rect width="430" height="260" fill="url(#dots)"/>
+          <path class="land" d="M-30 216C17 151 4 92 72 98s92-59 164-21 132-7 220-36M-20 249C40 167 24 112 86 123s87-58 154-25 158-9 215-24" stroke="#dce5dd" stroke-width="1.5"/>
+          <path d="M26 229h94c25 0 35-14 35-38v-55c0-27 18-45 44-45h66c30 0 48-15 48-45V18" stroke="#d1dad4" stroke-width="12" stroke-linecap="round"/>
+          <path d="M26 229h94c25 0 35-14 35-38v-55c0-27 18-45 44-45h66c30 0 48-15 48-45V18" stroke="#fafbf7" stroke-width="6" stroke-linecap="round"/>
+          <path d="M47 51h72c24 0 36 13 36 37v86c0 23 16 37 39 37h114c29 0 48-16 48-45V110" stroke="#3e7057" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="77" cy="51" r="8" fill="#fafbf7" stroke="#3e7057" stroke-width="4"/>
+          <circle cx="155" cy="146" r="11" fill="#fafbf7" stroke="#3e7057" stroke-width="4"/>
+          <circle cx="278" cy="211" r="8" fill="#fafbf7" stroke="#3e7057" stroke-width="4"/>
+          <circle cx="356" cy="110" r="7" fill="#3e7057"/>
+          <path d="m151 126 4 6 4-6" stroke="#3e7057" stroke-width="2"/>
+        </svg>
+        <span class="route-label origin">Deine Welt</span><span class="route-label junction">Ein gemeinsamer Stand</span><span class="route-label destination">Eure Ideen</span>
+      </div>
+    </section>
+
+    <section class="workspace" aria-label="Multiplayer verwalten">
+      <div class="launch-panel">
+        <div class="section-heading"><h2>Welche Version spielt ihr?</h2><span>01 / AUSWÄHLEN</span></div>
+        <div class="channels" role="radiogroup" aria-label="Multiplayer-Version">
+          <button class="channel selected" type="button" role="radio" aria-checked="true" tabindex="0" data-channel="official"><span class="channel-top"><strong>Original</strong><span class="radio-mark"></span></span><span>Von silver2127</span></button>
+          <button class="channel" type="button" role="radio" aria-checked="false" tabindex="-1" data-channel="community"><span class="channel-top"><strong>Community</strong><span class="radio-mark"></span></span><span>Von tearded</span></button>
+        </div>
+        <p class="channel-description" id="channel-description">Die veröffentlichte Version des Originalprojekts.</p>
+        <div class="release-state"><div><span class="field-label">INSTALLIERT</span><strong id="installed-version">0.5.6 <small>Original</small></strong></div><svg class="version-arrow"><use href="#arrow"/></svg><div><span class="field-label">VERFÜGBAR</span><strong id="offered-version">0.6.1.1</strong></div><span class="status-pill" id="release-status">Update verfügbar</span></div>
+        <button class="primary-button" id="main-action"><svg><use href="#download"/></svg><span>Aktualisieren &amp; spielen</span><svg class="action-arrow"><use href="#arrow"/></svg></button>
+        <button class="text-button secondary-play" id="play-current"><svg><use href="#play"/></svg>Installierte Version starten</button>
+        <p class="safety-note"><svg><use href="#shield"/></svg><span>Der bisherige Stand wird vor jedem Wechsel gesichert.</span></p>
+      </div>
+
+      <aside class="news-panel" aria-labelledby="news-title">
+        <div class="section-heading"><h2 id="news-title">Was gibt’s Neues?</h2><button class="icon-button subtle" id="check-game" aria-label="Spielupdates prüfen"><svg><use href="#refresh"/></svg></button></div>
+        <div class="news-meta"><span id="news-channel">ORIGINAL</span><span class="separator-dot">·</span><span id="news-version">VERSION 0.6.1.1</span></div>
+        <h3 id="news-headline">Mehr Zeit zum<br>gemeinsamen Laden.</h3>
+        <p id="news-description">Der Resync wartet jetzt zuverlässig, während die anderen Spieler ihre Welt noch laden.</p>
+        <ul class="news-points" id="news-points"><li><span class="point-dot"></span>Gemeinsames Laden mit drei Spielern korrigiert</li><li><span class="point-dot"></span>Für alle Mitspieler dieselbe Version verwenden</li></ul>
+        <a class="release-link" id="release-link" href="https://github.com/silver2127/tpf2-multiplayer/releases/tag/v0.6.1.1" target="_blank" rel="noopener noreferrer">Alle Versionshinweise<svg><use href="#external"/></svg></a>
+        <div class="team-note"><span class="team-symbol">2+</span><p>Vor dem Start kurz abstimmen:<br><strong>Gleicher Kanal. Gleiche Version.</strong></p></div>
+      </aside>
+    </section>
+    <div class="utility-row"><span class="connection-status"><span></span>Beispieldaten · keine Installation verbunden</span><div><button class="text-button" id="open-folder"><svg><use href="#folder"/></svg>Spielordner</button><button class="text-button" id="open-backups"><svg><use href="#shield"/></svg>Sicherungen</button></div></div>
+  </main>
+  <footer class="app-footer"><span>TPF2 Multiplayer Launcher <span class="footer-version">/ Neuer Entwurf</span></span><button class="launcher-status" id="launcher-info"><span class="status-dot"></span>Launcher-Updates<svg><use href="#arrow"/></svg></button></footer>
+</div>
+
+<dialog id="settings-dialog" aria-labelledby="settings-title"><div class="dialog-heading"><span class="eyebrow">DEIN LAUNCHER</span><button class="icon-button close-dialog" aria-label="Schließen"><svg><use href="#close"/></svg></button></div><h2 id="settings-title">Einmal einrichten.<br>Einfach weiterspielen.</h2><p class="dialog-intro">Launcher und Multiplayer werden unabhängig voneinander aktualisiert.</p><div class="setting-row"><div><strong>Launcher-Updates prüfen</strong><p>Automatisch bei jedem Öffnen.</p></div><span class="setting-badge">Automatisch</span></div><div class="setting-row"><div><strong>Neue Launcher-Version installieren</strong><p>Erst, wenn du auf „Aktualisieren“ klickst.</p></div><span class="setting-badge">Per Klick</span></div><div class="update-preview"><svg><use href="#download"/></svg><div><strong>Ein eigener Updatekanal</strong><p>Geplant: GitHub-Releases für den Launcher.<br>Der Kanal ist noch nicht eingerichtet.</p></div></div><button class="primary-button close-dialog">Verstanden<svg><use href="#check"/></svg></button></dialog>
+<dialog id="preview-dialog" aria-labelledby="preview-title"><div class="dialog-heading"><span class="eyebrow">INTERAKTIVER ENTWURF</span><button class="icon-button close-dialog" aria-label="Schließen"><svg><use href="#close"/></svg></button></div><h2 id="preview-title">So wird es funktionieren.</h2><p id="preview-message" class="dialog-intro"></p><ol class="update-steps"><li><span>1</span>Herunterladen und prüfen</li><li><span>2</span>Bisherigen Stand sichern</li><li><span>3</span>Aktualisieren und starten</li></ol><p class="demo-note">In dieser Vorschau werden keine Dateien geändert und kein Spiel gestartet.</p><button class="primary-button close-dialog">Zurück zum Entwurf<svg><use href="#arrow"/></svg></button></dialog>
+<div role="status" class="toast" id="toast" hidden></div>
+</body>
+</html>
